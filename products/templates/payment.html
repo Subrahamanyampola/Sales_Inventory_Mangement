@@ -1,0 +1,87 @@
+{% extends 'base.html' %} 
+{% block content %}
+<script>
+jQuery(function() {
+	jQuery( "#payment_date" ).datepicker({
+	  changeMonth: true,
+	  changeYear: true,
+	   yearRange: "0:+1",
+	   dateFormat: 'd MM,yy'
+	});
+});
+</script>
+<style>
+.ltl {
+    color: #000000;
+    font-weight: bold;
+    font-size: 15px;
+}
+</style>
+    <!--breadcrumbs start-->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-sm-10">
+                    <h1>Customer Information</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--breadcrumbs end-->
+
+    <!--container start-->
+    <div class="container w">
+		<div class="row centered">
+		<div class="col-sm-8">
+		<div style="clear:both"></div>
+			<form class="form-horizontal " method="post" action="#">
+					{% csrf_token %}
+								  <div class="form-group">
+                                      <label class="col-sm-3 control-label ltl">Customer Name</label>
+                                      <div class="col-sm-9">
+                                          <input name="customer_name" type="text"  class="form-control" required>
+                                      </div>
+                                  </div>
+								  <div class="form-group">
+									<label class="col-sm-3 control-label ltl">Customer EmailID</label>
+									<div class="col-sm-9">
+										<input name="customer_email" type="text" class="form-control" required>
+									</div>
+								  </div>
+								  <div class="form-group">
+									<label class="col-sm-3 control-label ltl">Customer Contact</label>
+									<div class="col-sm-9">
+										<input name="customer_contact" type="text" class="form-control" required>
+									</div>
+								  </div> 
+								  <div class="form-group">
+									<label class="col-sm-3 control-label ltl">Customer Full Address</label>
+									<div class="col-sm-9">
+										<input name="customer_address" type="text" class="form-control" required>
+									</div>
+								  </div> 
+								  <div class="form-group">
+                                      <label class="col-sm-3 control-label ltl">Amount</label>
+                                      <div class="col-sm-9">
+                                          <input type="text" class="form-control" required name="order_amount" value="{{orderTotal.TotalCartValue}}0/-" readonly>
+                                      </div>
+                                  </div>
+                                  <div class="form-group"> 
+				<label class="control-label col-sm-2" for="email"></label>
+				<div class="col-sm-8" style="text-align:left;">
+				  <button type="submit" class="btn btn-primary" style="width:140px; padding:8px;">Make Payment</button>
+				</div>
+			  </div>
+			  <input type="hidden" name="act" value="save_order">
+			  <input type="hidden" name="order_meal_id" value="<?=$_REQUEST[meal_id]?>">
+			</form>
+			</div>
+			<div class="col-sm-3" style="margin-bottom:10px;">
+				<div>
+					<img src="/assets/img/payment1.jpg" style="width:250px;">
+					<img src="/assets/img/payment.jpg" style="width:250px;">
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock content %}
