@@ -6,7 +6,8 @@ from django.db import models
 # Create your models here.
 class Type(models.Model):
     name = models.CharField(max_length=255)
-    
+
+ 
 class product(models.Model):
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=255, default = '')

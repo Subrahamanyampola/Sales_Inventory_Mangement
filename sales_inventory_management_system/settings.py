@@ -89,9 +89,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sales_inventory_management_system',
         'USER':'root',
-        'PASSWORD':'cherry',
+        'PASSWORD':'',
         'HOST':'localhost',
-        'PORT':'3306'
+        'PORT':'3307'
     }
 }
 
