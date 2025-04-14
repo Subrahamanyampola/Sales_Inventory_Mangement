@@ -10,25 +10,50 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: sales_inventory_management_system
+          MYSQL_USER: root
+          MYSQL_PASSWORD: ""
+          MYSQL_ROOT_PASSWORD: ""
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    env:
+      DATABASE_NAME: sales_inventory_management_system
+      DATABASE_USER: root
+      DATABASE_PASSWORD: ""
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_PORT: 3307
 
     steps:
-    - name: Checkout code
+    - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.9'
 
-    - name: Upgrade pip and install dependencies if available
+    - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install Django==2.2 mysqlclient
 
-    - name: Run Django tests
+    - name: Wait for MySQL to be ready
+      run: |
+        echo "Waiting for MySQL to be healthy..."
+        until mysqladmin ping -h127.0.0.1 -uroot --silent; do
+          sleep 3
+        done
+
+    - name: Run Migrations
+      run: |
+        python manage.py migrate
+
+    - name: Run Tests
       run: |
         python manage.py test
